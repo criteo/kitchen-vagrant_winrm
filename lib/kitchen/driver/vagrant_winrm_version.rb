@@ -21,6 +21,6 @@ module Kitchen
   module Driver
 
     # Version string for VagrantWinrm Kitchen driver
-    VAGRANT_WINRM_VERSION = '0.1.1.dev'
+    VAGRANT_WINRM_VERSION = '0.1.1'
   end
 end
