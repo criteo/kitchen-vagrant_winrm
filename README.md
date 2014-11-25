@@ -71,8 +71,9 @@ platforms:
     driver:
       name: vagrant_winrm
       provisioner:
-        name: chef-zero
+        name: chef_zero
         sudo: false
+        root_path: /var/chef/
       driver_config:
         guest: windows
         communicator: 'winrm'
