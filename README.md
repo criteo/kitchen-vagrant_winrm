@@ -70,16 +70,16 @@ platforms:
   - name: windows-2008r2
     driver:
       name: vagrant_winrm
-      provisioner:
-        name: chef_zero
-        sudo: false
-        root_path: /var/chef/
-      driver_config:
-        guest: windows
-        communicator: 'winrm'
-        winrm_username: 'vagrant'
-        winrm_password: 'vagrant'
-        #...
+    provisioner:
+      name: chef_zero
+      sudo: false
+      root_path: /var/chef/
+    driver_config:
+      guest: windows
+      communicator: 'winrm'
+      winrm_username: 'vagrant'
+      winrm_password: 'vagrant'
+      #...
 ```
 
 Please read the [Driver usage][driver_usage] page for more details.
