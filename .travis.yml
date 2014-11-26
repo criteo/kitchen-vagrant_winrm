@@ -1,0 +1,10 @@
+language: ruby
+deploy:
+  provider: rubygems
+  api_key:
+    secure: UM1xgIt9jc8oy0ZL6R7VTPApn/JTrjvIM1J1QcPNtKkp4b9Ykr62uozsadyk4giTlMU3/Fhswx6wdInwzKwLy63OVn1P4iSJn66SlOAcnn1EuK5oqyJ7UsDL8ZUphIHx0OQD+FYn/ax3ClqieWfC4W/jU277skziS9lOkEQ8FLw=
+  gem: kitchen-vagant_winrm
+  on:
+    tags: true
+    all_branches: true
+    repo: criteo/kitchen-vagant_winrm
