@@ -12,10 +12,17 @@ module Kitchen
     # @author Baptiste Courtois <b.courtois@criteo.com>
     class VagrantWinrm < Base
 
-      default_config :customize, {}
+      default_config :communicator, :winrm
+      default_config :customize, {
+        vrde: 'on',
+        vrdeport: '5000-5100',
+        vrdeauthtype: 'null',
+      }
+      default_config :guest, :windows
       default_config :network, []
-      default_config :synced_folders, []
       default_config :pre_create_command, nil
+      default_config :require_chef_omnibus, false
+      default_config :synced_folders, []
 
       default_config :vagrantfile_erb,
         File.join(File.dirname(__FILE__), '../../../templates/Vagrantfile.erb')
@@ -53,9 +60,10 @@ module Kitchen
         run_remote provisioner.install_command
         run_remote provisioner.init_command
 
-        Dir.glob("#{provisioner.sandbox_path}/*").each do |file|
-          upload file, File.join(provisioner[:root_path], File.basename(file))
-        end
+        sandbox_path = provisioner[:sandbox_path]
+        root_path = provisioner[:root_path]
+        debug("Uploading #{sandbox_path} to #{root_path} through WinRM")
+        run "vagrant winrm-upload -c '#{sandbox_path}' '#{root_path}'"
 
         run_remote provisioner.prepare_command
         run_remote provisioner.run_command
@@ -87,6 +95,7 @@ module Kitchen
 
       def verify_dependencies
         check_vagrant_version
+        check_vagrant_winrm_version
       end
 
       def instance=(instance)
@@ -95,20 +104,25 @@ module Kitchen
       end
 
       protected
-
       WEBSITE = 'http://downloads.vagrantup.com/'
-      MIN_VER = '1.1.0'
-
-      def upload(source, destination)
-        debug("Uploading #{source} to #{destination} through WinRM")
-        run "vagrant winrm-upload \"#{source}\" \"#{destination}\""
-      end
+      VAGRANT_MIN_VER = '1.6.0'
+      VAGRANT_WINRM_MIN_VER = '0.4.0'
 
       def run_remote(cmd)
         return unless cmd
 
         debug("Executing winRM command #{cmd}")
-        run "vagrant winrm -c \"#{cmd.gsub(/["`\\\x0]/, '\\\\\0')}\""
+        tmp = ::Tempfile.new(['script', '.sh'])
+        begin
+          tmp << cmd
+          tmp.close
+
+          remote_script = run "vagrant winrm-upload -t '#{tmp.path}'"
+          run "vagrant winrm -c 'sh \"#{remote_script}\"'"
+        ensure
+          tmp.close
+          tmp.unlink
+        end
       end
 
       def run(cmd, options = {})
@@ -194,15 +208,36 @@ module Kitchen
         version_string = silently_run('vagrant --version')
         version_string = version_string.chomp.split(' ').last
       rescue Errno::ENOENT
-        raise UserError, "Vagrant #{MIN_VER} or higher is not installed." +
-          " Please download a package from #{WEBSITE}."
+        raise UserError, <<-EOS
+Vagrant #{VAGRANT_MIN_VER} or higher is not installed.
+Please download a package from #{WEBSITE}.
+EOS
       end
 
       def check_vagrant_version
         version = vagrant_version
-        if Gem::Version.new(version) < Gem::Version.new(MIN_VER)
-          raise UserError, "Detected an old version of Vagrant (#{version})." +
-            " Please upgrade to version #{MIN_VER} or higher from #{WEBSITE}."
+        if Gem::Version.new(version) < Gem::Version.new(VAGRANT_MIN_VER)
+          raise UserError, <<-EOS
+Detected an old version of Vagrant (#{version}).
+Please upgrade to version #{VAGRANT_MIN_VER} or higher from #{WEBSITE}.
+EOS
+        end
+      end
+
+      def vagrant_winrm_version
+        silently_run('vagrant winrm --plugin-version').chomp.split(' ').last
+      rescue Errno::ENOENT
+        raise UserError,
+          "Vagrant-winrm #{VAGRANT_WINRM_MIN_VER} or higher is not installed."
+      end
+
+      def check_vagrant_winrm_version
+        version = vagrant_winrm_version
+        if Gem::Version.new(version) < Gem::Version.new(VAGRANT_WINRM_MIN_VER)
+          raise UserError, <<-EOS
+Detected an old version of Vagrant-winrm (#{version}).
+Please upgrade to version #{VAGRANT_WINRM_MIN_VER} or higher.
+EOS
         end
       end
     end
