@@ -2,6 +2,7 @@ require 'fileutils'
 require 'rubygems/version'
 require 'kitchen'
 require 'tempfile'
+require 'shellwords'
 
 module Kitchen
 
@@ -108,7 +109,7 @@ module Kitchen
         return unless cmd
 
         debug("Executing winRM command #{cmd}")
-        run "vagrant winrm -c \"#{cmd.gsub(/["`\\\x0]/, '\\\\\0')}\""
+        run "vagrant winrm -c #{cmd.shellescape}"
       end
 
       def run(cmd, options = {})
