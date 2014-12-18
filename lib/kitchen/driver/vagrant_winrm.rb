@@ -65,13 +65,13 @@ module Kitchen
 
       def setup(state)
         create_vagrantfile
-        run_remote busser_setup_cmd
+        run_remote busser.setup_cmd
       end
 
       def verify(state)
         create_vagrantfile
-        run_remote busser_sync_cmd
-        run_remote busser_run_cmd
+        run_remote busser.sync_cmd
+        run_remote busser.run_cmd
       end
 
       def destroy(state)
