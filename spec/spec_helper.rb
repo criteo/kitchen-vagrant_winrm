@@ -4,12 +4,6 @@
 # loaded once.
 #
 require 'rspec'
-require './lib/vagrant-winrm.rb'
-require './lib/vagrant-winrm/plugin.rb'
-require './lib/vagrant-winrm/plugin.rb'
-require './lib/vagrant-winrm/commands/winrm.rb'
-require './lib/vagrant-winrm/commands/winrm_config.rb'
-require './lib/vagrant-winrm/commands/winrm_upload.rb'
 
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
 RSpec.configure do |config|
