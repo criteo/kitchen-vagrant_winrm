@@ -60,8 +60,9 @@ module Kitchen
         run_remote provisioner.install_command
         run_remote provisioner.init_command
 
-        sandbox_path = provisioner[:sandbox_path]
+        sandbox_path = provisioner.sandbox_path
         root_path = provisioner[:root_path]
+
         debug("Uploading #{sandbox_path} to #{root_path} through WinRM")
         run "vagrant winrm-upload -c '#{sandbox_path}' '#{root_path}'"
 
