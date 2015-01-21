@@ -74,6 +74,9 @@ platforms:
       name: chef_zero
       sudo: false
       root_path: /var/chef/
+      chef_client_path: /opscode/chef/bin/chef-client
+      chef_omnibus_root: /opscode/chef/
+      ruby_bindir: /opscode/chef/embedded/bin
     driver_config:
       guest: windows
       communicator: 'winrm'
