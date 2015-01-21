@@ -115,6 +115,29 @@ By default the value is unset, or `nil`. In this case the driver will use the
 Vagrant [default provider][vagrant_default_provider] which at this current time
 is `virtualbox` unless set by `VAGRANT_DEFAULT_PROVIDER` environment variable.
 
+### <a name="config-custom_settings"></a> custom_settings
+
+A **Hash** of Vagrant settings. Each key/value pair should be vagrant settings.
+It could be used to configure custom plugins. For example:
+
+```ruby
+driver:
+  custom_settings:
+    omnibus.chef_version: :latest
+    berkshelf.enabled: 'false'
+```
+
+will generate a Vagrantfile configuration similar to:
+```ruby
+Vagrant.configure("2") do |config|
+  # ...
+
+  config.omnibus.chef_version = :latest
+  config.berkshelf.enabled = false
+end
+
+You should take care of adding single/double quotes around your string values.
+
 ### <a name="config-customize"></a> customize
 
 A **Hash** of customizations to a Vagrant virtual machine.  Each key/value

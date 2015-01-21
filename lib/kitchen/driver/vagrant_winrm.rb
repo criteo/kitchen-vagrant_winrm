@@ -13,6 +13,7 @@ module Kitchen
     class VagrantWinrm < Base
 
       default_config :communicator, :winrm
+      default_config :custom_settings, {}
       default_config :customize, {
         vrde: 'on',
         vrdeport: '5000-5100',
