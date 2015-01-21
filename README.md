@@ -104,6 +104,14 @@ started.
 
 The default will be computed from the platform name of the instance.
 
+### <a name="config-provision"></a> provision
+
+A boolean value that determines whether Vagrant provisioning system is used
+when creating the VM.
+
+By default the value is unset, or `nil`. In this case the driver will not use
+the Vagrant provisioning system
+
 ### <a name="config-provider"></a> provider
 
 This determines which Vagrant provider to use. The value should match
