@@ -1,3 +1,6 @@
+## 0.3.0
+* Leverage the vagrant-winrm 0.5.0 elevated command feature
+
 ## 0.2.2
 * Allow to configure custom/arbitrary vagrant settings
 * Allow to use vagrant provisioning system

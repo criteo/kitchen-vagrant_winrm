@@ -26,7 +26,7 @@ styles of Vagrant installations
 
 ### <a name="dependencies-vagrant-winrm"></a> Vagrant-Winrm plugin
 
-The [Vagrant-winrm][vagrant_winrm] plugin is required for this driver to
+A version higher or equal to 0.5.0 of the [Vagrant-winrm][vagrant_winrm] plugin is required for this driver to
 communicate with the machine.
 
 ### <a name="dependencies-virtualization"></a> Virtualbox and/or VMware Fusion/Workstation

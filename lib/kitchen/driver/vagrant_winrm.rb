@@ -110,7 +110,7 @@ module Kitchen
       protected
       WEBSITE = 'http://downloads.vagrantup.com/'
       VAGRANT_MIN_VER = '1.6.0'
-      VAGRANT_WINRM_MIN_VER = '0.4.0'
+      VAGRANT_WINRM_MIN_VER = '0.5.0'
 
       def run_remote(cmd)
         return unless cmd
@@ -122,7 +122,7 @@ module Kitchen
           tmp.close
 
           remote_script = run "vagrant winrm-upload -t '#{tmp.path}'"
-          run "vagrant winrm -c 'sh \"#{remote_script}\"'"
+          run "vagrant winrm -e -c 'sh \"#{remote_script}\"'"
         ensure
           tmp.close
           tmp.unlink
