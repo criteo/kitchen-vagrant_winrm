@@ -1,4 +1,6 @@
-# <a name="title"></a> Kitchen::VagrantWinrm
+# <a name="title"></a> Kitchen::VagrantWinrm - DEPRECATED!
+
+This project has been deprecated in favor of the windows support built in Test-Kitchen v1.4 or newer.
 
 A Test Kitchen Driver for Vagrant using WinRM.
 
